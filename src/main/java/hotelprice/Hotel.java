@@ -15,6 +15,7 @@ public class Hotel implements Serializable {
     private String name;
     private String pageData;
     private String[] words;
+    private String website;
 
     /**
      * Constructs a Hotel object with the provided attributes.
@@ -26,7 +27,7 @@ public class Hotel implements Serializable {
      * @param url      The URL of the hotel.
      * @param words    An array of words associated with the hotel.
      */
-    public Hotel(String price, String location, String score, String name, String url, String[] words) {
+    public Hotel(String price, String location, String score, String name, String url, String[] words, String website) {
         this.price = price;
         this.location = location;
         this.score = score;
@@ -34,6 +35,7 @@ public class Hotel implements Serializable {
         this.url = url;
         // this.pageData = pageData;
         this.words = words;
+        this.website = website;
     }
 
     /**
@@ -107,5 +109,14 @@ public class Hotel implements Serializable {
      */
     public String[] getWords() {
         return words;
+    }
+
+    /**
+     * Gets the website associated with the hotel.
+     *
+     * @return the website name of the hotel
+     */
+    public String getWebsite() {
+        return website;
     }
 }

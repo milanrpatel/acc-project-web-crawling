@@ -10,6 +10,8 @@ public class Config {
 	 */
 	public static final String CHROME_DRIVER_PATH = "./drivers/chromedriver.exe";
 
+	public static final long DEFAULT_TIMEOUT = 1000;
+
 	/**
 	 * The domain name for Kayak website.
 	 */

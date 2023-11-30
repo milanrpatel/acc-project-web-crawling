@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.jsoup.nodes.Document;
@@ -45,9 +46,13 @@ public class HotelList implements Serializable {
 	 */
 	public static String buildTripHotelURL(String domainName, String hotelId, Date checkIn, Date checkOut,
 			int numberOfAdults) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
+		Calendar c = Calendar.getInstance();
+		c.setTime(checkOut);
+		c.add(Calendar.DATE, 1);
 		return domainName + "/hotels/detail/?hotelId=" + hotelId +
-				"&checkIn=" + checkIn +
-				"&checkOut=" + checkOut +
+				"&checkIn=" + dateFormat.format(checkIn) +
+				"&checkOut=" + dateFormat.format(c.getTime()) +
 				"&adult=" + numberOfAdults;
 	}
 
@@ -72,6 +77,8 @@ public class HotelList implements Serializable {
 			String price = element.getElementsByClass("zV27-price").first() != null
 					? element.getElementsByClass("zV27-price").first().text()
 					: "N/A";
+
+					System.out.println("Price: " + price);
 			String location = element.getElementsByClass("FLpo-location-name").first() != null
 					? element.getElementsByClass("FLpo-location-name").first().text().toLowerCase()
 					: "N/A";
@@ -100,7 +107,7 @@ public class HotelList implements Serializable {
 
 			addToMap(startDateMap, Common.convertDate(startDate), name);
 
-			hotelList.put(name, new Hotel(price, location, score, name, url, words));
+			hotelList.put(name, new Hotel(price, location, score, name, url, words, "kayak"));
 		}
 		// saveValues();
 	}
@@ -155,7 +162,7 @@ public class HotelList implements Serializable {
 
 			addToMap(startDateMap, Common.convertDate(startDate), name);
 
-			hotelList.put(name, new Hotel(price, location, score, name, url, words));
+			hotelList.put(name, new Hotel(price, location, score, name, url, words, "momondo"));
 		}
 		// saveValues();
 	}
@@ -224,7 +231,7 @@ public class HotelList implements Serializable {
 
 			addToMap(startDateMap, Common.convertDate(startDate), name);
 
-			hotelList.put(name, new Hotel(price, location, score, name, url, words));
+			hotelList.put(name, new Hotel(price, location, score, name, url, words, "trip"));
 		}
 		// saveValues();
 	}
@@ -256,7 +263,7 @@ public class HotelList implements Serializable {
 	 * @return The text content fetched from the URL.
 	 */
 	public static String fetchTextFromUrl(WebDriver driver, String url, String name, String website) {
-		String html = HTMLUtils.fetchHtml(driver, url, website + "_" + name);
+		String html = HTMLUtils.fetchHtml(driver, url, website + "_" + name, Config.DEFAULT_TIMEOUT);
 		Document doc = HTMLUtils.parse(html);
 		return doc.body().text();
 	}

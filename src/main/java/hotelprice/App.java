@@ -137,11 +137,14 @@ public final class App {
             WebDriver driver = new ChromeDriver();
             WebCrawler webCrawler = new WebCrawler(date, date, 2, driver);
             webCrawler.runCrawler();
-            System.out.println("Hotel List: ");
-            for (String hotel : HotelList.getHotelList().keySet()) {
-                System.out.println(hotel);
-            }
+
             driver.close();
+        }
+        HotelList.saveValues();
+        
+        System.out.println("Hotel List: ");
+        for (String hotel : HotelList.getHotelList().keySet()) {
+            System.out.println(hotel);
         }
     }
 

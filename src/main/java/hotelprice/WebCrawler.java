@@ -109,8 +109,9 @@ public class WebCrawler {
 		// Kayak Crawling
 		System.out.println("\nKayak Web crawling");
 		url = this.buildKayakURL(startDate, endDate, 2);
+		System.out.println(url);
 		name = "kayak_start";
-		html = HTMLUtils.fetchHtml(this.driver, url, name);
+		html = HTMLUtils.fetchHtml(this.driver, url, name, 25000);
 		domForHotelList = HTMLUtils.parse(html);
 		HotelList.addKayakHotelDocumentToList(domForHotelList, this.driver,
 				startDate, endDate);
@@ -118,8 +119,9 @@ public class WebCrawler {
 		// Momondo Crawling
 		System.out.println("\nMomondo Web crawling");
 		url = this.buildMonondoURL(startDate, endDate, 2);
+		System.out.println(url);
 		name = "momondo_start";
-		html = HTMLUtils.fetchHtml(this.driver, url, name);
+		html = HTMLUtils.fetchHtml(this.driver, url, name, 25000);
 		domForHotelList = HTMLUtils.parse(html);
 		HotelList.addMomondoHotelDocumentToList(domForHotelList, this.driver,
 				startDate, endDate);
@@ -127,13 +129,14 @@ public class WebCrawler {
 		// Trip Crawling
 		System.out.println("\nTrip Web crawling");
 		url = this.buildTripURL(startDate, endDate, 2);
+		System.out.println(url);
 		name = "trip_start";
-		html = HTMLUtils.fetchHtml(this.driver, url, name);
+		html = HTMLUtils.fetchHtml(this.driver, url, name, 2000);
 		domForHotelList = HTMLUtils.parse(html);
 		HotelList.addTripHotelDocumentToList(domForHotelList, this.driver, startDate,
 				endDate);
 
-		HotelList.saveValues();
+		// HotelList.saveValues();
 	}
 
 }

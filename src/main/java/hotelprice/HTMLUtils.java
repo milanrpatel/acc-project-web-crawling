@@ -31,11 +31,11 @@ public class HTMLUtils {
 	 * @param name   The name associated with the content (used for file naming).
 	 * @return The fetched HTML content as a string.
 	 */
-	public static String fetchHtml(WebDriver driver, String url, String name) {
+	public static String fetchHtml(WebDriver driver, String url, String name, long loadTime) {
 		driver.get(url);
 
 		try {
-			Thread.sleep(30000);
+			Thread.sleep(loadTime);
 		} catch (Exception e) {
 		}
 		String s = driver.getPageSource();
