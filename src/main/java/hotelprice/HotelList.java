@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.jsoup.nodes.Document;
@@ -14,8 +13,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.openqa.selenium.WebDriver;
 
-import com.google.common.primitives.Floats;
-
+/**
+ * Represents a list of hotels with various utilities for crawling, processing,
+ * and managing hotel data.
+ */
 public class HotelList implements Serializable {
 	private static Map<String, Hotel> hotelList = new TreeMap<>();
 	private static Map<String, HashSet<String>> locationMap = new TreeMap<>();
@@ -25,10 +26,23 @@ public class HotelList implements Serializable {
 	private static String fileName = "./serializedValues";
 	private static SplayTree splayTree = new SplayTree();
 
+	/**
+	 * Default constructor that reads serialized values upon object creation.
+	 */
 	public HotelList() {
 		readValues();
 	}
 
+	/**
+	 * Builds a Trip.com hotel URL based on the provided parameters.
+	 *
+	 * @param domainName     The domain name of the website.
+	 * @param hotelId        The ID of the hotel.
+	 * @param checkIn        The check-in date.
+	 * @param checkOut       The check-out date.
+	 * @param numberOfAdults The number of adults.
+	 * @return The constructed Trip.com hotel URL.
+	 */
 	public static String buildTripHotelURL(String domainName, String hotelId, Date checkIn, Date checkOut,
 			int numberOfAdults) {
 		return domainName + "/hotels/detail/?hotelId=" + hotelId +
@@ -37,7 +51,14 @@ public class HotelList implements Serializable {
 				"&adult=" + numberOfAdults;
 	}
 
-	// This method is compete for Kayak
+	/**
+	 * Adds hotel documents from the Kayak website to the hotel list.
+	 *
+	 * @param doc       The HTML document containing hotel information.
+	 * @param driver    The WebDriver for interacting with the web page.
+	 * @param startDate The start date of the hotel stay.
+	 * @param endDate   The end date of the hotel stay.
+	 */
 	public static void addKayakHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("kzGk");
 		System.out.println("here. elements: " + elements.size());
@@ -84,7 +105,14 @@ public class HotelList implements Serializable {
 		// saveValues();
 	}
 
-	// This method need to change based on momondo WEBSITE
+	/**
+	 * Adds hotel documents from the Momondo website to the hotel list.
+	 *
+	 * @param doc       The HTML document containing hotel information.
+	 * @param driver    The WebDriver for interacting with the web page.
+	 * @param startDate The start date of the hotel stay.
+	 * @param endDate   The end date of the hotel stay.
+	 */
 	public static void addMomondoHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("kzGk");
 		System.out.println("here in momomndo: " + elements.size());
@@ -132,7 +160,14 @@ public class HotelList implements Serializable {
 		// saveValues();
 	}
 
-	// This method need to change based on Trip WEBSITE
+	/**
+	 * Adds hotel documents from the Trip.com website to the hotel list.
+	 *
+	 * @param doc       The HTML document containing hotel information.
+	 * @param driver    The WebDriver for interacting with the web page.
+	 * @param startDate The start date of the hotel stay.
+	 * @param endDate   The end date of the hotel stay.
+	 */
 	public static void addTripHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("compressmeta-hotel-wrap-v8");
 		System.out.println("here. elements: " + elements.size());
@@ -194,6 +229,13 @@ public class HotelList implements Serializable {
 		// saveValues();
 	}
 
+	/**
+	 * Adds hotel names to a set in the provided map based on the specified key.
+	 *
+	 * @param map       The map to which hotel names are added.
+	 * @param key       The key in the map.
+	 * @param hotelName The name of the hotel to be added.
+	 */
 	public static void addToMap(Map<String, HashSet<String>> map, String key, String hotelName) {
 		if (map.containsKey(key)) {
 			map.get(key).add(hotelName);
@@ -204,6 +246,15 @@ public class HotelList implements Serializable {
 		}
 	}
 
+	/**
+	 * Fetches text content from a given URL using a WebDriver.
+	 *
+	 * @param driver  The WebDriver for interacting with the web page.
+	 * @param url     The URL from which text is to be fetched.
+	 * @param name    The name associated with the hotel.
+	 * @param website The website name.
+	 * @return The text content fetched from the URL.
+	 */
 	public static String fetchTextFromUrl(WebDriver driver, String url, String name, String website) {
 		String html = HTMLUtils.fetchHtml(driver, url, website + "_" + name);
 		Document doc = HTMLUtils.parse(html);
@@ -230,6 +281,9 @@ public class HotelList implements Serializable {
 		return allWordsTrie;
 	}
 
+	/**
+	 * Saves serialized values to a file.
+	 */
 	public static void saveValues() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -247,6 +301,9 @@ public class HotelList implements Serializable {
 		}
 	}
 
+	/**
+	 * Reads serialized values from a file.
+	 */
 	public static void readValues() {
 		try {
 			FileInputStream fileIn = new FileInputStream(fileName);
@@ -271,6 +328,11 @@ public class HotelList implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the location trie.
+	 *
+	 * @return The location trie.
+	 */
 	public static Trie getLocationTrie() {
 		return locationTrie;
 	}

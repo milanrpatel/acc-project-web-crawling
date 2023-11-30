@@ -10,8 +10,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+/**
+ * Utility class for spell checking and providing suggestions based on edit
+ * distances.
+ */
 public class SpellChecker {
-    public static int calculateEditDistance(String s1, String s2) {
+	/**
+	 * Calculates the edit distance between two strings using dynamic programming.
+	 *
+	 * @param s1 The first string.
+	 * @param s2 The second string.
+	 * @return The edit distance between the two strings.
+	 */
+	public static int calculateEditDistance(String s1, String s2) {
 		int s1Len = s1.length();
 		int s2Len = s2.length();
 		int[][] arr = new int[2][s1Len + 1];
@@ -33,6 +44,17 @@ public class SpellChecker {
 		return arr[s2Len % 2][s1Len];
 	}
 
+	/**
+	 * Calculates edit distances between a keyword and a list of words and returns a
+	 * map of words
+	 * with their corresponding edit distances.
+	 *
+	 * @param keyword The keyword to compare distances against.
+	 * @param words   The list of words to calculate distances for.
+	 * @param n       The number of least distances to consider.
+	 * @return A map containing words and their edit distances sorted in ascending
+	 *         order.
+	 */
 	public static Map<String, Integer> getEditDistances(String keyword, ArrayList<String> words, int n) {
 		Map<String, Integer> distances = new HashMap<String, Integer>();
 		for (String s : words) {
@@ -64,18 +86,26 @@ public class SpellChecker {
 		return leastNDistances;
 	}
 
-    public Map<String, List<String>> getSuggestions(String[] keywords, ArrayList<String> words) {
-        Map<String, List<String>> map = new HashMap<>();
-        for (String keyword: keywords) {
-            //TODO: check if not exists in word list
-            Map<String, Integer> distances = new HashMap<>();
-            List<String> suggestedWordList = new ArrayList<>();
-            distances = getEditDistances(keyword, words, 3);
-            for (String suggestedWord: distances.keySet()) {
-                suggestedWordList.add(suggestedWord);
-            }
-            map.put(keyword, suggestedWordList);
-        }
-        return map;
-    }
+	/**
+	 * Retrieves suggestions for each keyword based on edit distances from a list of
+	 * words.
+	 *
+	 * @param keywords The array of keywords to get suggestions for.
+	 * @param words    The list of words to compare against.
+	 * @return A map where each keyword is associated with a list of suggested
+	 *         words.
+	 */
+	public Map<String, List<String>> getSuggestions(String[] keywords, ArrayList<String> words) {
+		Map<String, List<String>> map = new HashMap<>();
+		for (String keyword : keywords) {
+			Map<String, Integer> distances = new HashMap<>();
+			List<String> suggestedWordList = new ArrayList<>();
+			distances = getEditDistances(keyword, words, 3);
+			for (String suggestedWord : distances.keySet()) {
+				suggestedWordList.add(suggestedWord);
+			}
+			map.put(keyword, suggestedWordList);
+		}
+		return map;
+	}
 }
