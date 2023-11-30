@@ -1,18 +1,35 @@
 package hotelprice;
 
+/**
+ * Class representing SplayTree.
+ */
 class SplayTree {
     public SearchedQueryFrequency root;
 
+    /**
+     * Constructor to initialize an empty SplayTree.
+     */
     public SplayTree() {
         this.root = null;
     }
 
+    /**
+     * Method to find the maximum node in a subtree rooted at x.
+     * 
+     * @param x The root node of the subtree.
+     * @return The node with the maximum value in the subtree.
+     */
     public SearchedQueryFrequency maximum(SearchedQueryFrequency x) {
         while (x.right != null)
             x = x.right;
         return x;
     }
 
+    /**
+     * Method to perform a left rotation on the SplayTree.
+     * 
+     * @param x The node to perform left rotation on.
+     */
     public void leftRotate(SearchedQueryFrequency x) {
         SearchedQueryFrequency y = x.right;
         x.right = y.left;
@@ -31,6 +48,11 @@ class SplayTree {
         x.parent = y;
     }
 
+    /**
+     * Method to perform a right rotation on the SplayTree.
+     * 
+     * @param x The node to perform left rotation on.
+     */
     public void rightRotate(SearchedQueryFrequency x) {
         SearchedQueryFrequency y = x.left;
         x.left = y.right;
@@ -49,6 +71,11 @@ class SplayTree {
         x.parent = y;
     }
 
+    /**
+     * Method to splay a node in the SplayTree.
+     * 
+     * @param n The node to splay.
+     */
     public void splay(SearchedQueryFrequency n) {
         while (n.parent != null) { // SearchedQueryFrequency is not root
             if (n.parent == this.root) { // SearchedQueryFrequency is child of root, one rotation
@@ -78,6 +105,11 @@ class SplayTree {
         }
     }
 
+    /**
+     * Method to insert a node into the SplayTree.
+     * 
+     * @param n The node to insert.
+     */
     public void insert(SearchedQueryFrequency n) {
         SearchedQueryFrequency y = null;
         SearchedQueryFrequency temp = this.root;
@@ -90,7 +122,7 @@ class SplayTree {
         }
         n.parent = y;
 
-        if (y == null) // newly added SearchedQueryFrequency is root
+        if (y == null) // Make Root newly added searched query frequency
             this.root = n;
         else if (n.compareTo(y) < 0)
             y.left = n;
@@ -100,6 +132,12 @@ class SplayTree {
         this.splay(n);
     }
 
+    /**
+     * Method to search for a node in the SplayTree.
+     * 
+     * @param x The node to search for.
+     * @return The found node.
+     */
     public SearchedQueryFrequency search(SearchedQueryFrequency x) {
         return search(root, x);
     }
@@ -118,6 +156,11 @@ class SplayTree {
             return null;
     }
 
+    /**
+     * Method to delete a node from the SplayTree.
+     * 
+     * @param n The node to delete.
+     */
     public void delete(SearchedQueryFrequency n) {
         this.splay(n);
 
@@ -141,6 +184,11 @@ class SplayTree {
         }
     }
 
+    /**
+     * Method to perform an inorder traversal of the SplayTree.
+     * 
+     * @param n The root node for traversal.
+     */
     public void inorder(SearchedQueryFrequency n) {
         if (n != null) {
             inorder(n.left);
@@ -149,6 +197,11 @@ class SplayTree {
         }
     }
 
+    /**
+     * Main method to demonstrate SplayTree functionalities.
+     * 
+     * @param args Command line arguments (unused).
+     */
     public static void main(String[] args) {
         SplayTree t = new SplayTree();
 

@@ -9,24 +9,21 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.text.ParseException;
 import java.util.Arrays;
 
 /**
- * Hello world!
+ * Main class containing the application logic.
  */
 public final class App {
-    /**
-     * Says hello to the world.
-     * 
-     * @param args The arguments of the program.
-     */
     WordFrequency wf;
     InvertedIndex invertedIndex;
 
     public String[] keywords;
 
+    /**
+     * Displays the main menu and handles user inputs for various options.
+     */
     private void menu() {
         int swValue = 0;
         HotelList hotelListObj = new HotelList();
@@ -41,41 +38,40 @@ public final class App {
                 // System.out.print("\033[H\033[2J");
                 System.out.flush();
                 System.out.println("\n\n");
-                System.out.println("|==================================================================|");
-                System.out.println("|                    MAIN MENU                                     |");
-                System.out.println("|==================================================================|");
+                System.out.println("|******************************************************************|");
+                System.out.println("|                            MAIN MENU                             |");
+                System.out.println("|******************************************************************|");
                 System.out.println("| Options:                                                         |");
-                System.out.println("|        1. Crawl the site                                         |");
-                System.out.println("|        2. Create word freq and inverted index                    |");
-                System.out.println("|        3. Search anything                                        |");
-                System.out.println("|        4. Enter precise search criteria                          |");
-                System.out.println("|        5. Exit                                                   |");
-                System.out.println("|==================================================================|");
-                // swValue = Keyin.inInt(" Select option: ");
-                System.out.println("\nSelect Option: ");
+                System.out.println("|        1. Crawl the website                                      |");
+                System.out.println("|        2. Generate word frequency and inverted index             |");
+                System.out.println("|        3. Perform a search                                       |");
+                System.out.println("|        4. Specify precise search criteria                        |");
+                System.out.println("|        5. Quit                                                   |");
+                System.out.println("|******************************************************************|");
+                System.out.println("\nSelect Option from above: ");
                 String next = sc.nextLine();
                 swValue = Integer.parseInt(next);
                 // Switch construct
                 switch (swValue) {
                     case 1:
                         crawl(sc);
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         break;
                     case 2:
                         createIndex(sc);
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         break;
                     case 3:
                         search(sc);
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         break;
                     case 4:
                         userInput(sc);
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         break;
                     case 5:
                         System.out.println("Exiting...");
-                        Thread.sleep(1000);
+                        Thread.sleep(1200);
                         break;
                     default:
                         throw new Exception();
@@ -87,6 +83,11 @@ public final class App {
         }
     }
 
+    /**
+     * Performs a search based on user input keywords.
+     *
+     * @param sc The Scanner object for user input.
+     */
     void search(Scanner sc) {
         SplayTree splayTree = HotelList.getSplayTree();
         SearchedQueryFrequency frequency = splayTree.root;
@@ -112,6 +113,9 @@ public final class App {
         System.out.print("\n");
     }
 
+    /**
+     * Prints the word frequency and inverted index.
+     */
     void printIndex() {
         System.out.println("Word Frequency: ");
         wf.printIndex();
@@ -119,6 +123,11 @@ public final class App {
         // invertedIndex.printIndex();
     }
 
+    /**
+     * Initiates crawling of the site for hotel data.
+     *
+     * @param sc The Scanner object for user input.
+     */
     void crawl(Scanner sc) {
         Date starDate = new Date();
         Date endDate = new Date(starDate.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -136,6 +145,11 @@ public final class App {
         }
     }
 
+    /**
+     * Creates word frequency and inverted index based on crawled data.
+     *
+     * @param sc The Scanner object for user input.
+     */
     void createIndex(Scanner sc) {
         System.out.println("Creating word Frequency map...");
         wf = new WordFrequency(HotelList.getHotelList());
@@ -150,6 +164,11 @@ public final class App {
         // invertedIndex.printIndex();
     }
 
+    /**
+     * Takes user input for hotel details.
+     *
+     * @param sc The Scanner object for user input.
+     */
     private void userInput(Scanner sc) {
         System.out.println("Asking user for hotel details...");
         try {
@@ -159,6 +178,12 @@ public final class App {
         }
     }
 
+    /**
+     * Retrieves search keywords from user input.
+     *
+     * @param sc The Scanner object for user input.
+     * @return An array of search keywords.
+     */
     String[] getSearchKeywords(Scanner sc) {
         System.out.print("Enter the Search query: ");
         String query = sc.nextLine();
@@ -170,6 +195,11 @@ public final class App {
         return words;
     }
 
+    /**
+     * Saves searched queries in a SplayTree data structure.
+     *
+     * @param query The search query to be saved.
+     */
     private void saveInSplayTree(String query) {
 
         SplayTree splayTree = HotelList.getSplayTree();
@@ -182,6 +212,11 @@ public final class App {
         }
     }
 
+    /**
+     * Main method to initiate the application.
+     *
+     * @param args The arguments passed to the program.
+     */
     public static void main(String[] args) {
         App app = new App();
         app.menu();

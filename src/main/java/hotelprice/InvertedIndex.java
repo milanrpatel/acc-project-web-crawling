@@ -1,27 +1,35 @@
 package hotelprice;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Represents an inverted index that maps words to the set of hotels containing
+ * those words.
+ */
 public class InvertedIndex {
 
     Map<String, HashSet<String>> indexOfHotelList = new HashMap<>();
     Map<String, Hotel> hotelMap;
 
+    /**
+     * Constructs an InvertedIndex with the specified hotel map.
+     *
+     * @param hotelMap The map of hotels to be indexed.
+     */
+
     public InvertedIndex(Map<String, Hotel> hotelMap) {
         this.hotelMap = hotelMap;
     }
 
+    /**
+     * Adds the specified hotel to the inverted index.
+     *
+     * @param hotel The hotel to be added to the index.
+     */
     public void addToIndex(Hotel hotel) {
         String[] words = hotel.getWords();
         String hotelName = hotel.getName();
@@ -38,6 +46,11 @@ public class InvertedIndex {
 
     }
 
+    /**
+     * Adds the specified hotel to the inverted index.
+     *
+     * @param hotel The hotel to be added to the index.
+     */
     public void createIndex() {
         for (Hotel hotel : hotelMap.values()) {
             addToIndex(hotel);
@@ -45,7 +58,14 @@ public class InvertedIndex {
         // System.out.println(indexList.toString());
     }
 
-    // return set of document indexes which contains the following words
+    /**
+     * Searches the inverted index for the specified words and returns the set of
+     * hotels
+     * containing those words.
+     *
+     * @param words The array of words to search for.
+     * @return The set of hotel names containing the specified words.
+     */
     public Set<String> search(String[] words) {
         Set<String> hotelSet = new HashSet<>();
         for (String w : words) {
