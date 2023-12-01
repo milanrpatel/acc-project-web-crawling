@@ -36,6 +36,7 @@ class SearchedQueryFrequency implements Comparable<SearchedQueryFrequency> {
     public SearchedQueryFrequency right;
     public SearchedQueryFrequency parent;
 
+    // Constructor to initialize a node with query and count
     public SearchedQueryFrequency(String data, int count) {
         this.query = data;
         this.count = count;
@@ -43,20 +44,24 @@ class SearchedQueryFrequency implements Comparable<SearchedQueryFrequency> {
         this.left = null;
         this.right = null;
     }
-
+    
+    // CompareTo method for sorting nodes based on the query string
     @Override
     public int compareTo(SearchedQueryFrequency o) {
         return this.getQuery().compareTo(o.getQuery());
     }
 
+    // Getter method to retrieve the count of the searched query
     public Integer getCount() {
         return count;
     }
 
+    // Getter method to retrieve the searched query string
     public String getQuery() {
         return query;
     }
 
+    // Setter method to set the count of the searched query
     public void setCount(Integer count) {
         this.count = count;
     }
