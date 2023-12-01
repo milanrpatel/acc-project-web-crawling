@@ -12,9 +12,11 @@ import java.text.SimpleDateFormat;
 import org.jsoup.nodes.Document;
 
 public class WebCrawler {
+	// Map to store word frequencies
 	// List<Hotel> hotelList = new ArrayList<Hotel>();
 	Map<Integer, Map<String, Integer>> wordFrequency = new HashMap<>();
 	// Map<String, Map<String, Integer>> wordToDocMap = new HashMap<>();
+	// Inverted index to be initialized with HotelList data
 	InvertedIndex invertedIndex = new InvertedIndex(HotelList.getHotelList());
 
 	private Date startDate;
@@ -22,13 +24,14 @@ public class WebCrawler {
 	private int numberOfAdults;
 	private WebDriver driver;
 
+    // Constructor to initialize WebCrawler object with necessary parameters
 	public WebCrawler(Date startDate, Date endDate, int numberOfAdults, WebDriver driver) {
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.numberOfAdults = numberOfAdults;
 		this.driver = driver;
 	}
-
+     // Method to build Kayak URL based on input parameters
 	private String buildKayakURL(Date startDate, Date endDate, int numberOfAdults) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar c = Calendar.getInstance();
@@ -39,7 +42,7 @@ public class WebCrawler {
 		url = url.replace("<NOA>", Integer.toString(numberOfAdults));
 		return url;
 	}
-
+    // Method to build Momondo URL based on input parameters
 	private String buildMonondoURL(Date startDate, Date endDate, int numberOfAdults) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
 		Calendar c = Calendar.getInstance();
@@ -50,7 +53,7 @@ public class WebCrawler {
 		url = url.replace("<NOA>", Integer.toString(numberOfAdults));
 		return url;
 	}
-
+	// Method to build Trip URL based on input parameters
 	private String buildTripURL(Date startDate, Date endDate, int numberOfAdults) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY/MM/dd");
 		Calendar c = Calendar.getInstance();
@@ -61,7 +64,7 @@ public class WebCrawler {
 		url = url.replace("<NOA>", Integer.toString(numberOfAdults));
 		return url;
 	}
-
+	// Main method to execute the web crawling process
 	public void runCrawler() {
 
 		String url, name, html;
