@@ -32,34 +32,34 @@ public class UserInput {
         Date endDate1 = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         // Asking user to enter Start Date for Booking
-        System.out.println("Enter the start date in dd/MM/yyyy format: ");
+        System.out.println("Please provide the start date using the format dd/MM/yyyy: ");
         startDate = sc.nextLine();
         while (!validateDate(startDate)) {
             try {
                 startDate1 = sdf.parse(startDate);
-                System.out.println("\nInvalid date format. Please enter the start date in the format dd/MM/yyyy: ");
+                System.out.println("\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
                 startDate = sc.nextLine();
             } catch (Exception e) {
-                System.out.println("Not a valid date. Please enter again");
+                System.out.println("The provided date is incorrect. Please input a valid date.");
                 startDate = sc.nextLine();
             }
         }
         // Asking user to enter End Date for Booking
-        System.out.println("\nEnter the end date in dd/MM/yyyy format: ");
+        System.out.println("\nPlease provide the end date using the format dd/MM/yyyy: ");
         endDate = sc.nextLine();
         while (!validateDate(endDate)) {
             try {
                 endDate1 = sdf.parse(endDate);
-                System.out.println("\nInvalid date format. Please enter the end date in the format dd/MM/yyyy: ");
+                System.out.println("\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
                 endDate = sc.nextLine();
             } catch (Exception e) {
-                System.out.println("Not a valid date. Please enter again");
+                System.out.println("The provided date is incorrect. Please input a valid date.");
                 startDate = sc.nextLine();
             }
         }
 
         do {
-            System.out.println("\nEnter the location: ");
+            System.out.println("\nKindly provide Location: ");
             location = sc.nextLine();
             if (validateLocation(location))
                 break;
@@ -69,7 +69,7 @@ public class UserInput {
 
         if (validateDate(startDate) && validateDate(endDate) && validateLocation(location)) {
             System.out.println(
-                    "\nStart date: " + startDate + "\nEnd date: " + endDate + "\nLocation: " + location + "\n");
+                    "\nStarting Date: " + startDate + "\nEnding Date: " + endDate + "\nLocation: " + location + "\n");
             // find accurate results
             Set<String> locationHotels = HotelList.getLocationMap().get(location);
 
@@ -101,7 +101,7 @@ public class UserInput {
 
             if (!commonHotels.isEmpty()) {
                 // Printing Hotel Names based on Ratings
-                System.out.println("\nHotels based on ratings:");
+                System.out.println("\nHotel(s) list according to Ratings:");
                 List<String> ratingHotels = sortHotelsAccordingToCriteria(commonHotels, HotelList.getHotelList(), 1);
                 for (String hotel : ratingHotels) {
                     System.out.println("    -- Name: " + hotelList.get(hotel).getName());
@@ -111,7 +111,7 @@ public class UserInput {
                     System.out.print("\n");
                 }
                 // Printing Hotel Names based on Price
-                System.out.println("\nHotels based on price:");
+                System.out.println("\nHotel(s) list according to Price:");
                 List<String> priceHotels = sortHotelsAccordingToCriteria(commonHotels, HotelList.getHotelList(), 2);
                 for (String hotel : priceHotels) {
                     System.out.println("    -- Name: " + hotelList.get(hotel).getName());
@@ -121,16 +121,16 @@ public class UserInput {
                     System.out.print("\n");
                 }
 
-                System.out.println("\nDo you want to search for other input? y or n");
+                System.out.println("\nWould you like to look for different input? Type 'y' for yes or 'n' for no.");
                 String searchAgain = sc.nextLine();
                 if (searchAgain.equals("y")) {
                     new UserInput(sc);
                 }
 
             } else {
-                System.out.println("No hotel found between the dates you entered.");
+                System.out.println("No accommodations were discovered within the range of dates provided.");
 
-                System.out.println("\nSearch for other input:");
+                System.out.println("\nFind alternative input:");
                 new UserInput(sc);
             }
         }
@@ -233,13 +233,13 @@ public class UserInput {
      * @return The suggested location.
      */
     private String suggestWordCompletion(Scanner sc, String location, Set<String> locationSet) {
-        System.out.println("Word completion:");
+        System.out.println("Completing Word:");
         Trie locationTrie = HotelList.getLocationTrie();
         List<String> completedWords = locationTrie.completeWord(location);
         int count = 1;
 
         for (int i = 0; i < ((completedWords.size() < 5) ? completedWords.size() : 5); i++) {
-            System.out.println("Did you mean:--------------" + completedWords.get(i) + "? " + "Type " + count);
+            System.out.println("Are you intending to say------" + completedWords.get(i) + "? " + "Type " + count);
             count++;
         }
         int userInput = sc.nextInt();
@@ -292,14 +292,14 @@ public class UserInput {
         }
         int c = 1;
         if (!minWord.isEmpty()) {
-            System.out.println("\nDo you mean:--------------" + minWord + "? " + "Type " + c);
+            System.out.println("\nAre you intending to say------" + minWord + "? " + "Type " + c);
             c++;
         }
         if (!secondMinWord.isEmpty()) {
-            System.out.println("Do you mean:--------------" + secondMinWord + "? " + "Type " + c);
+            System.out.println("Are you intending to say------" + secondMinWord + "? " + "Type " + c);
         }
-        System.out.println("Complete Words:------------" + "Type 0");
-        System.out.println("Enter again:---------------" + "Type 9");
+        System.out.println("To Complete the Words:----" + "Click 0");
+        System.out.println("To again enter the text:------" + "Click 9");
 
         int userInput = sc.nextInt();
 
