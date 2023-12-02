@@ -41,18 +41,18 @@ public final class App {
                 // System.out.print("\033[H\033[2J");
                 System.out.flush();
                 System.out.println("\n\n");
-                System.out.println("|==================================================================|");
-                System.out.println("|                    MAIN MENU                                     |");
-                System.out.println("|==================================================================|");
-                System.out.println("| Options:                                                         |");
-                System.out.println("|        1. Crawl the site                                         |");
-                System.out.println("|        2. Create word freq and inverted index                    |");
-                System.out.println("|        3. Search anything                                        |");
-                System.out.println("|        4. Enter precise search criteria                          |");
-                System.out.println("|        5. Exit                                                   |");
-                System.out.println("|==================================================================|");
+                
+                System.out.println("---------------MENU---------------\n");
+            
+                System.out.println("Choose your Preference: ");
+                System.out.println("        1. Crawl the site");
+                System.out.println("        2. Create word freq and inverted index");
+                System.out.println("        3. Search anything");
+                System.out.println("        4. Enter precise search criteria");
+                System.out.println("        5. Exit");
+        
                 // swValue = Keyin.inInt(" Select option: ");
-                System.out.println("\nSelect Option: ");
+                System.out.println("\nEnter your choice: ");
                 String next = sc.nextLine();
                 swValue = Integer.parseInt(next);
                 // Switch construct
@@ -74,14 +74,14 @@ public final class App {
                         Thread.sleep(1000);
                         break;
                     case 5:
-                        System.out.println("Exiting...");
+                        System.out.println("Quiting Application!!!");
                         Thread.sleep(1000);
                         break;
                     default:
                         throw new Exception();
                 }
             } catch (Exception e) {
-                System.out.println("Invalid selection. Try again (Press Enter key to continue)" + e.getMessage());
+                System.out.println("Selection not recognized. Please retry. (Press the Enter key to proceed)" + e.getMessage());
                 sc.nextLine();
             }
         }
@@ -91,7 +91,7 @@ public final class App {
         SplayTree splayTree = HotelList.getSplayTree();
         SearchedQueryFrequency frequency = splayTree.root;
         if (frequency != null)
-            System.out.println("Most recently searched query is '" + frequency.getQuery() + "' having frequency "
+            System.out.println("The query that was searched for last is '" + frequency.getQuery() + "' with frequency "
                     + frequency.getCount() + "\n");
 
         keywords = getSearchKeywords(sc);
@@ -102,12 +102,12 @@ public final class App {
         pagerank.rankPages();
         List<String> hotelNameList = pagerank.getTopKHotels(10);
         if (!hotelNameList.isEmpty()) {
-            System.out.println("\nSearched string was found in following pages:");
+            System.out.println("\nThe string that was searched for has been located on the following pages:");
             for (String hotel : hotelNameList) {
                 System.out.println("  -- " + hotel);
             }
         } else {
-            System.out.println("Sorry! text you entered was not found.");
+            System.out.println("Apologies! The entered text could not be located.");
         }
         System.out.print("\n");
     }
@@ -116,7 +116,7 @@ public final class App {
         System.out.println("Word Frequency: ");
         wf.printIndex();
         System.out.println("Inverted Index: ");
-        // invertedIndex.printIndex();
+        //invertedIndex.printIndex();
     }
 
     void crawl(Scanner sc) {
@@ -128,7 +128,7 @@ public final class App {
             WebDriver driver = new ChromeDriver();
             WebCrawler webCrawler = new WebCrawler(date, date, 2, driver);
             webCrawler.runCrawler();
-            System.out.println("Hotel List: ");
+            System.out.println("List of Hotel(s): ");
             for (String hotel : HotelList.getHotelList().keySet()) {
                 System.out.println(hotel);
             }
@@ -137,21 +137,21 @@ public final class App {
     }
 
     void createIndex(Scanner sc) {
-        System.out.println("Creating word Frequency map...");
+        System.out.println("Generating word Frequency map..");
         wf = new WordFrequency(HotelList.getHotelList());
         wf.setWordFrequencies();
-        System.out.println("Word Frequency map was created successfuly...\n");
+        System.out.println("The creation of the word frequency map was completed successfully..\n");
 
         // wf.printIndex();
-        System.out.println("Creating Inverted index...");
+        System.out.println("Generating Inverted index...");
         invertedIndex = new InvertedIndex(HotelList.getHotelList());
         invertedIndex.createIndex();
-        System.out.println("Inverted index was done successfuly...");
+        System.out.println("The creation of the inverted index was completed successfully...");
         // invertedIndex.printIndex();
     }
 
     private void userInput(Scanner sc) {
-        System.out.println("Asking user for hotel details...");
+        System.out.println("Requesting information regarding the hotel..");
         try {
             new UserInput(sc);
         } catch (ParseException e) {
@@ -160,7 +160,7 @@ public final class App {
     }
 
     String[] getSearchKeywords(Scanner sc) {
-        System.out.print("Enter the Search query: ");
+        System.out.print("Please input the search query: ");
         String query = sc.nextLine();
 
         saveInSplayTree(query);
