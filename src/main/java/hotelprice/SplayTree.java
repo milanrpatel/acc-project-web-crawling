@@ -14,120 +14,121 @@ class SplayTree {
     }
 
     /**
-     * Method to find the maximum node in a subtree rooted at x.
+     * Finds the maximum node in a subtree rooted at xVar.
      * 
-     * @param x The root node of the subtree.
+     * @param xVar The root node of the subtree.
      * @return The node with the maximum value in the subtree.
      */
-    public SearchedQueryFrequency maximum(SearchedQueryFrequency x) {
-        while (x.right != null)
-            x = x.right;
-        return x;
+    public SearchedQueryFrequency maximum(SearchedQueryFrequency xVar) {
+        while (xVar.right != null)
+            xVar = xVar.right;
+        return xVar;
     }
 
     /**
-     * Method to perform a left rotation on the SplayTree.
+     * Performs a left rotation on the SplayTree.
      * 
-     * @param x The node to perform left rotation on.
+     * @param xVar The node to perform left rotation on.
      */
-    public void leftRotate(SearchedQueryFrequency x) {
-        SearchedQueryFrequency y = x.right;
-        x.right = y.left;
-        if (y.left != null) {
-            y.left.parent = x;
+    public void leftRotate(SearchedQueryFrequency xVar) {
+        SearchedQueryFrequency yVar = xVar.right;
+        xVar.right = yVar.left;
+        if (yVar.left != null) {
+            yVar.left.parent = xVar;
         }
-        y.parent = x.parent;
-        if (x.parent == null) { // x is root
-            this.root = y;
-        } else if (x == x.parent.left) { // x is left child
-            x.parent.left = y;
-        } else { // x is right child
-            x.parent.right = y;
+        yVar.parent = xVar.parent;
+        if (xVar.parent == null) { // xVar is root
+            this.root = yVar;
+        } else if (xVar == xVar.parent.left) { // xVar is left child
+            xVar.parent.left = yVar;
+        } else { // xVar is right child
+            xVar.parent.right = yVar;
         }
-        y.left = x;
-        x.parent = y;
+        yVar.left = xVar;
+        xVar.parent = yVar;
     }
 
     /**
-     * Method to perform a right rotation on the SplayTree.
+     * Performs a right rotation on the SplayTree.
      * 
-     * @param x The node to perform left rotation on.
+     * @param xVar The node to perform left rotation on.
      */
-    public void rightRotate(SearchedQueryFrequency x) {
-        SearchedQueryFrequency y = x.left;
-        x.left = y.right;
-        if (y.right != null) {
-            y.right.parent = x;
+    public void rightRotate(SearchedQueryFrequency xVar) {
+        SearchedQueryFrequency yVar = xVar.left;
+        xVar.left = yVar.right;
+        if (yVar.right != null) {
+            yVar.right.parent = xVar;
         }
-        y.parent = x.parent;
-        if (x.parent == null) { // x is root
-            this.root = y;
-        } else if (x == x.parent.right) { // x is left child
-            x.parent.right = y;
-        } else { // x is right child
-            x.parent.left = y;
+        yVar.parent = xVar.parent;
+        if (xVar.parent == null) { // xVar is root
+            this.root = yVar;
+        } else if (xVar == xVar.parent.right) { // xVar is left child
+            xVar.parent.right = yVar;
+        } else { // xVar is right child
+            xVar.parent.left = yVar;
         }
-        y.right = x;
-        x.parent = y;
+        yVar.right = xVar;
+        xVar.parent = yVar;
     }
 
     /**
-     * Method to splay a node in the SplayTree.
+     * Splays a node in the SplayTree to bring it to the root.
      * 
-     * @param n The node to splay.
+     * @param nodeVar The node to splay.
      */
-    public void splay(SearchedQueryFrequency n) {
-        while (n.parent != null) { // SearchedQueryFrequency is not root
-            if (n.parent == this.root) { // SearchedQueryFrequency is child of root, one rotation
-                if (n == n.parent.left) {
-                    this.rightRotate(n.parent);
+    public void splay(SearchedQueryFrequency nodeVar) {
+        while (nodeVar.parent != null) { // SearchedQueryFrequency is not root
+            if (nodeVar.parent == this.root) { // SearchedQueryFrequency is child of root, one rotation
+                if (nodeVar == nodeVar.parent.left) {
+                    this.rightRotate(nodeVar.parent);
                 } else {
-                    this.leftRotate(n.parent);
+                    this.leftRotate(nodeVar.parent);
                 }
             } else {
-                SearchedQueryFrequency p = n.parent;
-                SearchedQueryFrequency g = p.parent; // grandparent
+                SearchedQueryFrequency parentVar = nodeVar.parent;
+                SearchedQueryFrequency gpVar = parentVar.parent; // grandparent
 
-                if (n.parent.left == n && p.parent.left == p) { // both are left children
-                    this.rightRotate(g);
-                    this.rightRotate(p);
-                } else if (n.parent.right == n && p.parent.right == p) { // both are right children
-                    this.leftRotate(g);
-                    this.leftRotate(p);
-                } else if (n.parent.right == n && p.parent.left == p) {
-                    this.leftRotate(p);
-                    this.rightRotate(g);
-                } else if (n.parent.left == n && p.parent.right == p) {
-                    this.rightRotate(p);
-                    this.leftRotate(g);
+                if (nodeVar.parent.left == nodeVar && parentVar.parent.left == parentVar) { // both are left children
+                    this.rightRotate(gpVar);
+                    this.rightRotate(parentVar);
+                } else if (nodeVar.parent.right == nodeVar && parentVar.parent.right == parentVar) { // both are right
+                                                                                                     // children
+                    this.leftRotate(gpVar);
+                    this.leftRotate(parentVar);
+                } else if (nodeVar.parent.right == nodeVar && parentVar.parent.left == parentVar) {
+                    this.leftRotate(parentVar);
+                    this.rightRotate(gpVar);
+                } else if (nodeVar.parent.left == nodeVar && parentVar.parent.right == parentVar) {
+                    this.rightRotate(parentVar);
+                    this.leftRotate(gpVar);
                 }
             }
         }
     }
 
     /**
-     * Method to insert a node into the SplayTree.
+     * Inserts a new node into the SplayTree.
      * 
      * @param n The node to insert.
      */
     public void insert(SearchedQueryFrequency n) {
-        SearchedQueryFrequency y = null;
+        SearchedQueryFrequency yVar = null;
         SearchedQueryFrequency temp = this.root;
         while (temp != null) {
-            y = temp;
+            yVar = temp;
             if (n.compareTo(temp) < 0)
                 temp = temp.left;
             else
                 temp = temp.right;
         }
-        n.parent = y;
+        n.parent = yVar;
 
-        if (y == null) // Make Root newly added searched query frequency
+        if (yVar == null) // Make Root newly added searched query frequency
             this.root = n;
-        else if (n.compareTo(y) < 0)
-            y.left = n;
+        else if (n.compareTo(yVar) < 0)
+            yVar.left = n;
         else
-            y.right = n;
+            yVar.right = n;
 
         this.splay(n);
     }
@@ -135,29 +136,35 @@ class SplayTree {
     /**
      * Method to search for a node in the SplayTree.
      * 
-     * @param x The node to search for.
+     * @param xVar The node to search for.
      * @return The found node.
      */
-    public SearchedQueryFrequency search(SearchedQueryFrequency x) {
-        return search(root, x);
+    public SearchedQueryFrequency search(SearchedQueryFrequency xVar) {
+        return search(root, xVar);
     }
 
-    private SearchedQueryFrequency search(SearchedQueryFrequency n, SearchedQueryFrequency x) {
+    /**
+     * Searches for a node in the SplayTree.
+     * 
+     * @param xVar The node to search for.
+     * @return The found node.
+     */
+    private SearchedQueryFrequency search(SearchedQueryFrequency n, SearchedQueryFrequency xVar) {
         if (n == null)
             return null;
-        if (x.compareTo(n) == 0) {
+        if (xVar.compareTo(n) == 0) {
             this.splay(n);
             return n;
-        } else if (x.compareTo(n) < 0)
-            return this.search(n.left, x);
-        else if (x.compareTo(n) > 0)
-            return this.search(n.right, x);
+        } else if (xVar.compareTo(n) < 0)
+            return this.search(n.left, xVar);
+        else if (xVar.compareTo(n) > 0)
+            return this.search(n.right, xVar);
         else
             return null;
     }
 
     /**
-     * Method to delete a node from the SplayTree.
+     * Deletes a node from the SplayTree.
      * 
      * @param n The node to delete.
      */
@@ -184,8 +191,10 @@ class SplayTree {
         }
     }
 
+    // Traversal:
+
     /**
-     * Method to perform an inorder traversal of the SplayTree.
+     * Performs an inorder traversal of the SplayTree.
      * 
      * @param n The root node for traversal.
      */
@@ -198,13 +207,14 @@ class SplayTree {
     }
 
     /**
-     * Main method to demonstrate SplayTree functionalities.
+     * Demonstrates SplayTree functionalities.
      * 
      * @param args Command line arguments (unused).
      */
     public static void main(String[] args) {
         SplayTree t = new SplayTree();
 
+        // Demonstration of functionalities
         t.insert(new SearchedQueryFrequency("hotels", 1));
         System.out.println(t.root.getQuery());
         t.insert(new SearchedQueryFrequency("toronto", 1));

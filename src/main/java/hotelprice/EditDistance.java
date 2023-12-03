@@ -4,51 +4,60 @@ package hotelprice;
  * Utility class for calculating the edit distance between two strings.
  */
 public class EditDistance {
+
 	/**
 	 * Calculates the edit distance between two input strings using dynamic
 	 * programming.
 	 *
-	 * @param word1 The first input string.
-	 * @param word2 The second input string.
+	 * @param source The first input string.
+	 * @param target The second input string.
 	 * @return The edit distance between the two input strings.
 	 */
-	public static int editDistance(String word1, String word2) {
-		int len1 = word1.length();
-		int len2 = word2.length();
+	public static int editDistance(String source, String target) {
+		int sourceLength = source.length();
+		int targetLength = target.length();
 
-		// len1+1, len2+1, because finally return dp[len1][len2]
-		int[][] dp = new int[len1 + 1][len2 + 1];
+		// Create a matrix to store intermediate results, with dimensions (sourceLength
+		// + 1) x (targetLength + 1)
+		int[][] editDistanceMatrix = new int[sourceLength + 1][targetLength + 1];
 
-		for (int i = 0; i <= len1; i++) {
-			dp[i][0] = i;
+		// Initialize the first column of the matrix with values from 0 to sourceLength
+		for (int i = 0; i <= sourceLength; i++) {
+			editDistanceMatrix[i][0] = i;
 		}
 
-		for (int j = 0; j <= len2; j++) {
-			dp[0][j] = j;
+		// Initialize the first row of the matrix with values from 0 to targetLength
+		for (int j = 0; j <= targetLength; j++) {
+			editDistanceMatrix[0][j] = j;
 		}
 
-		// iterate though, and check last char
-		for (int i = 0; i < len1; i++) {
-			char c1 = word1.charAt(i);
-			for (int j = 0; j < len2; j++) {
-				char c2 = word2.charAt(j);
+		// Iterate through each character in the source and target strings
+		for (int i = 0; i < sourceLength; i++) {
+			char sourceChar = source.charAt(i);
 
-				// if last two chars equal
-				if (c1 == c2) {
-					// update dp value for +1 length
-					dp[i + 1][j + 1] = dp[i][j];
+			for (int j = 0; j < targetLength; j++) {
+				char targetChar = target.charAt(j);
+
+				// Check if the characters at the current positions are equal
+				if (sourceChar == targetChar) {
+					// If equal, update the edit distance value based on the diagonal value
+					editDistanceMatrix[i + 1][j + 1] = editDistanceMatrix[i][j];
 				} else {
-					int replace = dp[i][j] + 1;
-					int insert = dp[i][j + 1] + 1;
-					int delete = dp[i + 1][j] + 1;
+					// If not equal, calculate the minimum edit distance considering replacement,
+					// insertion, and deletion
+					int replace = editDistanceMatrix[i][j] + 1;
+					int insert = editDistanceMatrix[i][j + 1] + 1;
+					int delete = editDistanceMatrix[i + 1][j] + 1;
 
-					int min = replace > insert ? insert : replace;
-					min = delete > min ? min : delete;
-					dp[i + 1][j + 1] = min;
+					// Determine the minimum of the three operations and update the edit distance
+					// value
+					int min = Math.min(Math.min(replace, insert), delete);
+					editDistanceMatrix[i + 1][j + 1] = min;
 				}
 			}
 		}
 
-		return dp[len1][len2];
+		// The final edit distance is stored in the bottom-right corner of the matrix
+		return editDistanceMatrix[sourceLength][targetLength];
 	}
 }

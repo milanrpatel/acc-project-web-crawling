@@ -8,14 +8,15 @@ import java.io.Serializable;
  */
 public class Hotel implements Serializable {
 
-    private String price;
-    private String location;
-    private String score;
-    private String url;
-    private String name;
-    private String pageData;
-    private String[] words;
-    private String website;
+    // Attributes of the Hotel
+    private String price; // The price of the hotel
+    private String location; // The location of the hotel
+    private String score; // The score/rating of the hotel
+    private String url; // The URL of the hotel
+    private String name; // The name of the hotel
+    private String pageData; // Data associated with the hotel's webpage
+    private String[] words; // An array of words associated with the hotel
+    private String website; // The website associated with the hotel
 
     /**
      * Constructs a Hotel object with the provided attributes.
@@ -26,6 +27,7 @@ public class Hotel implements Serializable {
      * @param name     The name of the hotel.
      * @param url      The URL of the hotel.
      * @param words    An array of words associated with the hotel.
+     * @param website  The website associated with the hotel.
      */
     public Hotel(String price, String location, String score, String name, String url, String[] words, String website) {
         this.price = price;
@@ -33,7 +35,6 @@ public class Hotel implements Serializable {
         this.score = score;
         this.name = name;
         this.url = url;
-        // this.pageData = pageData;
         this.words = words;
         this.website = website;
     }
@@ -47,6 +48,8 @@ public class Hotel implements Serializable {
     public String toString() {
         return name;
     }
+
+    // Getter methods to retrieve specific attributes of the hotel
 
     /**
      * Gets the price of the hotel.
@@ -114,7 +117,7 @@ public class Hotel implements Serializable {
     /**
      * Gets the website associated with the hotel.
      *
-     * @return the website name of the hotel
+     * @return The website name of the hotel.
      */
     public String getWebsite() {
         return website;

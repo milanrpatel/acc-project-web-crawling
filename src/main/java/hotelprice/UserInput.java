@@ -37,7 +37,8 @@ public class UserInput {
         while (!validateDate(startDate)) {
             try {
                 startDate1 = sdf.parse(startDate);
-                System.out.println("\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
+                System.out.println(
+                        "\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
                 startDate = sc.nextLine();
             } catch (Exception e) {
                 System.out.println("The provided date is incorrect. Please input a valid date.");
@@ -50,7 +51,8 @@ public class UserInput {
         while (!validateDate(endDate)) {
             try {
                 endDate1 = sdf.parse(endDate);
-                System.out.println("\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
+                System.out.println(
+                        "\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
                 endDate = sc.nextLine();
             } catch (Exception e) {
                 System.out.println("The provided date is incorrect. Please input a valid date.");
@@ -85,7 +87,7 @@ public class UserInput {
             Map<String, Hotel> hotelList = HotelList.getHotelList();
 
             for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-                startDateHotels = HotelList.getStartDateMap().get(Common.convertDate(date));
+                startDateHotels = HotelList.getStartDateMap().get(Common.convertDateToSimpleFormat(date));
 
                 if (startDateHotels != null && commonStartDateHotels != null && !startDateHotels.isEmpty()
                         && !commonStartDateHotels.isEmpty()) {
@@ -108,6 +110,7 @@ public class UserInput {
                     System.out.println("       Price: " + hotelList.get(hotel).getPrice());
                     System.out.println("       Location: " + hotelList.get(hotel).getLocation());
                     System.out.println("       Ratings: " + hotelList.get(hotel).getScore());
+                    System.out.println("       Website: " + hotelList.get(hotel).getWebsite());
                     System.out.print("\n");
                 }
                 // Printing Hotel Names based on Price
@@ -118,6 +121,7 @@ public class UserInput {
                     System.out.println("       Price: " + hotelList.get(hotel).getPrice());
                     System.out.println("       Location: " + hotelList.get(hotel).getLocation());
                     System.out.println("       Ratings: " + hotelList.get(hotel).getScore());
+                    System.out.println("       Website: " + hotelList.get(hotel).getWebsite());
                     System.out.print("\n");
                 }
 

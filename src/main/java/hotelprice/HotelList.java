@@ -105,7 +105,7 @@ public class HotelList implements Serializable {
 			// Map has a key as location/startDate and value is a index of hotels.
 			addToMap(locationMap, location, name);
 
-			addToMap(startDateMap, Common.convertDate(startDate), name);
+			addToMap(startDateMap, Common.convertDateToSimpleFormat(startDate), name);
 
 			hotelList.put(name, new Hotel(price, location, score, name, url, words, "kayak"));
 		}
@@ -160,7 +160,7 @@ public class HotelList implements Serializable {
 			// Map has a key as location/startDate and value is a index of hotels.
 			addToMap(locationMap, location, name);
 
-			addToMap(startDateMap, Common.convertDate(startDate), name);
+			addToMap(startDateMap, Common.convertDateToSimpleFormat(startDate), name);
 
 			hotelList.put(name, new Hotel(price, location, score, name, url, words, "momondo"));
 		}
@@ -229,7 +229,7 @@ public class HotelList implements Serializable {
 			// Map has a key as location/startDate and value is a index of hotels.
 			addToMap(locationMap, location, name);
 
-			addToMap(startDateMap, Common.convertDate(startDate), name);
+			addToMap(startDateMap, Common.convertDateToSimpleFormat(startDate), name);
 
 			hotelList.put(name, new Hotel(price, location, score, name, url, words, "trip"));
 		}
@@ -326,7 +326,8 @@ public class HotelList implements Serializable {
 			in.close();
 			fileIn.close();
 		} catch (IOException i) {
-			i.printStackTrace();
+			// i.printStackTrace();
+			System.out.println("Here in file");
 			return;
 		} catch (ClassNotFoundException c) {
 			System.out.println("Employee class not found");

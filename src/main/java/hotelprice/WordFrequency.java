@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
  */
 public class WordFrequency {
 
-    Map<String, Map<String, Integer>> eachHotelFrequencyMap = new HashMap<>();
-    Map<String, Hotel> hotelMap;
+    Map<String, Map<String, Integer>> eachHotelFrequencyList = new HashMap<>();
+    Map<String, Hotel> hotelsMap;
 
     /**
      * Constructs a WordFrequency object with the given hotel map.
@@ -21,14 +21,14 @@ public class WordFrequency {
      * @param hotelMap The map containing hotel information.
      */
     public WordFrequency(Map<String, Hotel> hotelMap) {
-        this.hotelMap = hotelMap;
+        this.hotelsMap = hotelMap;
     }
 
     /**
      * Sets the word frequencies for each hotel based on their descriptions.
      */
     public void setWordFrequencies() {
-        for (Hotel hotel : hotelMap.values()) {
+        for (Hotel hotel : hotelsMap.values()) {
             String[] words = hotel.getWords();
             String hotelName = hotel.getName();
 
@@ -46,33 +46,33 @@ public class WordFrequency {
                     wordFrequencyMap.put(matchedWord, wordFrequencyMap.getOrDefault(matchedWord, 0) + 1);
                 }
             }
-            eachHotelFrequencyMap.put(hotelName, wordFrequencyMap);
+            eachHotelFrequencyList.put(hotelName, wordFrequencyMap);
         }
     }
 
     /**
      * Calculates scores based on given keywords and a set of hotel names.
      *
-     * @param keywords      The array of keywords to calculate scores.
-     * @param hotelNamesSet The set of hotel names to consider for scoring.
+     * @param keywordsList      The array of keywords to calculate scores.
+     * @param hotelNamesList The set of hotel names to consider for scoring.
      * @return A map containing hotel names and their corresponding scores.
      */
-    public Map<String, Integer> calculateScores(String[] keywords, Set<String> hotelNamesSet) {
-        Map<String, Integer> documentScoreMap = new HashMap<>();
-        for (String hotelName : hotelNamesSet) {
-            Map<String, Integer> wordFrequencyMap = eachHotelFrequencyMap.get(hotelName);
-            int score = 0;
-            for (String keyword : keywords) {
-                if (wordFrequencyMap.containsKey(keyword)) {
-                    score += wordFrequencyMap.get(keyword);
+    public Map<String, Integer> calculateScores(String[] keywordsList, Set<String> hotelNamesList) {
+        Map<String, Integer> documentScoreList = new HashMap<>();
+        for (String hotelName : hotelNamesList) {
+            Map<String, Integer> wordFrequencyList = eachHotelFrequencyList.get(hotelName);
+            int ratingScore = 0;
+            for (String keyword : keywordsList) {
+                if (wordFrequencyList.containsKey(keyword)) {
+                    ratingScore += wordFrequencyList.get(keyword);
                 }
             }
-            documentScoreMap.put(hotelName, score);
+            documentScoreList.put(hotelName, ratingScore);
         }
-        return documentScoreMap;
+        return documentScoreList;
     }
 
     public void printIndex() {
-        this.eachHotelFrequencyMap.forEach((key, value) -> System.out.println(key + ":" + value));
+        this.eachHotelFrequencyList.forEach((key, value) -> System.out.println(key + ":" + value));
     }
 }
