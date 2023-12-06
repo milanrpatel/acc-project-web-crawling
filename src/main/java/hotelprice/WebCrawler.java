@@ -106,16 +106,6 @@ public class WebCrawler {
 		String url, name, html;
 		Document domForHotelList;
 
-		// Kayak Crawling
-		System.out.println("\nKayak Web crawling");
-		url = this.buildKayakURL(startDate, endDate, 2);
-		System.out.println(url);
-		name = "kayak_start";
-		html = HTMLUtils.fetchHtml(this.driver, url, name, 25000);
-		domForHotelList = HTMLUtils.parse(html);
-		HotelList.addKayakHotelDocumentToList(domForHotelList, this.driver,
-				startDate, endDate);
-
 		// Momondo Crawling
 		System.out.println("\nMomondo Web crawling");
 		url = this.buildMonondoURL(startDate, endDate, 2);
@@ -124,6 +114,16 @@ public class WebCrawler {
 		html = HTMLUtils.fetchHtml(this.driver, url, name, 25000);
 		domForHotelList = HTMLUtils.parse(html);
 		HotelList.addMomondoHotelDocumentToList(domForHotelList, this.driver,
+				startDate, endDate);
+
+		// Kayak Crawling
+		System.out.println("\nKayak Web crawling");
+		url = this.buildKayakURL(startDate, endDate, 2);
+		System.out.println(url);
+		name = "kayak_start";
+		html = HTMLUtils.fetchHtml(this.driver, url, name, 25000);
+		domForHotelList = HTMLUtils.parse(html);
+		HotelList.addKayakHotelDocumentToList(domForHotelList, this.driver,
 				startDate, endDate);
 
 		// Trip Crawling
@@ -136,7 +136,6 @@ public class WebCrawler {
 		HotelList.addTripHotelDocumentToList(domForHotelList, this.driver, startDate,
 				endDate);
 
-		// HotelList.saveValues();
 	}
 
 }

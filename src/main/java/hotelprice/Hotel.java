@@ -9,25 +9,25 @@ import java.io.Serializable;
 public class Hotel implements Serializable {
 
     // Attributes of the Hotel
-    private String price; // The price of the hotel
-    private String location; // The location of the hotel
-    private String score; // The score/rating of the hotel
-    private String url; // The URL of the hotel
-    private String name; // The name of the hotel
-    private String pageData; // Data associated with the hotel's webpage
-    private String[] words; // An array of words associated with the hotel
-    private String website; // The website associated with the hotel
+    private String price; // Price of hotel
+    private String location; // Location of hotel
+    private String score; // Score/rating of hotel
+    private String url; // URL of hotel
+    private String name; // Name of hotel
+    private String pageData; // Data associated with hotel's webpage
+    private String[] words; // An array of words associated with hotel
+    private String website; // Website associated with hotel
 
     /**
      * Constructs a Hotel object with the provided attributes.
      *
-     * @param price    The price of the hotel.
-     * @param location The location of the hotel.
-     * @param score    The score/rating of the hotel.
-     * @param name     The name of the hotel.
-     * @param url      The URL of the hotel.
-     * @param words    An array of words associated with the hotel.
-     * @param website  The website associated with the hotel.
+     * @param price    price of hotel.
+     * @param location location of hotel.
+     * @param score    score/rating of hotel.
+     * @param name     name of hotel.
+     * @param url      URL of hotel.
+     * @param words    An array of words associated with hotel.
+     * @param website  website associated with hotel.
      */
     public Hotel(String price, String location, String score, String name, String url, String[] words, String website) {
         this.price = price;
@@ -40,84 +40,84 @@ public class Hotel implements Serializable {
     }
 
     /**
-     * Returns a string representation of the hotel (in this case, the hotel name).
+     * Returns a string representation of hotel (in this case, hotel name).
      *
-     * @return The name of the hotel.
+     * @return The name of hotel.
      */
     @Override
     public String toString() {
         return name;
     }
 
-    // Getter methods to retrieve specific attributes of the hotel
+    // Getter methods to retrieve specific attributes of hotel
 
     /**
-     * Gets the price of the hotel.
+     * Gets the price of hotel.
      *
-     * @return The price of the hotel.
+     * @return The price of hotel.
      */
     public String getPrice() {
         return price;
     }
 
     /**
-     * Gets the location of the hotel.
+     * Gets the location of hotel.
      *
-     * @return The location of the hotel.
+     * @return The location of hotel.
      */
     public String getLocation() {
         return location;
     }
 
     /**
-     * Gets the score/rating of the hotel.
+     * Gets the score/rating of hotel.
      *
-     * @return The score/rating of the hotel.
+     * @return The score/rating of hotel.
      */
     public String getScore() {
         return score;
     }
 
     /**
-     * Gets the URL of the hotel.
+     * Gets the URL of hotel.
      *
-     * @return The URL of the hotel.
+     * @return The URL of hotel.
      */
     public String getUrl() {
         return url;
     }
 
     /**
-     * Gets the name of the hotel.
+     * Gets the name of hotel.
      *
-     * @return The name of the hotel.
+     * @return The name of hotel.
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Gets the page data associated with the hotel.
+     * Gets the page data associated with hotel.
      *
-     * @return The page data of the hotel.
+     * @return The page data of hotel.
      */
     public String getPageData() {
         return pageData;
     }
 
     /**
-     * Gets the array of words associated with the hotel.
+     * Gets the array of words associated with hotel.
      *
-     * @return An array of words associated with the hotel.
+     * @return An array of words associated with hotel.
      */
     public String[] getWords() {
         return words;
     }
 
     /**
-     * Gets the website associated with the hotel.
+     * Gets the website associated with hotel.
      *
-     * @return The website name of the hotel.
+     * @return The website name of hotel.
      */
     public String getWebsite() {
         return website;

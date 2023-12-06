@@ -8,10 +8,10 @@ import java.util.Date;
  */
 public class Common {
     /**
-     * Converts a given Date object to a string representation in the format "dd/MM/yyyy".
+     * Converts a given Date object to a string representation
      *
-     * @param dateObj The Date object to be converted.
-     * @return A string representation of the date in "dd/MM/yyyy" format.
+     * @param dateObj
+     * @return A string of the date in format "dd/MM/yyyy".
      */
     public static String convertDateToSimpleFormat(Date dateObj) {
         SimpleDateFormat formatterObj = new SimpleDateFormat("dd/MM/yyyy");

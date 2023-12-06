@@ -1,17 +1,17 @@
 package hotelprice;
 
 /**
- * Utility class for calculating the edit distance between two strings.
+ * Utility class for determining the edit distance among strings.
  */
 public class EditDistance {
 
 	/**
-	 * Calculates the edit distance between two input strings using dynamic
+	 * Edit distance algorithm between 2 input strings using dynamic
 	 * programming.
 	 *
-	 * @param source The first input string.
-	 * @param target The second input string.
-	 * @return The edit distance between the two input strings.
+	 * @param source input1 string.
+	 * @param target input2 string.
+	 * @return The edit distance measurement between the two provided strings.
 	 */
 	public static int editDistance(String source, String target) {
 		int sourceLength = source.length();
@@ -19,16 +19,16 @@ public class EditDistance {
 
 		// Create a matrix to store intermediate results, with dimensions (sourceLength
 		// + 1) x (targetLength + 1)
-		int[][] editDistanceMatrix = new int[sourceLength + 1][targetLength + 1];
+		int[][] editDistanceMatrixFinal = new int[sourceLength + 1][targetLength + 1];
 
-		// Initialize the first column of the matrix with values from 0 to sourceLength
+		// Setting initial column of the matrix with values from 0 to sourceLength
 		for (int i = 0; i <= sourceLength; i++) {
-			editDistanceMatrix[i][0] = i;
+			editDistanceMatrixFinal[i][0] = i;
 		}
 
-		// Initialize the first row of the matrix with values from 0 to targetLength
+		// Init first row of the matrix with values from 0 to targetLength
 		for (int j = 0; j <= targetLength; j++) {
-			editDistanceMatrix[0][j] = j;
+			editDistanceMatrixFinal[0][j] = j;
 		}
 
 		// Iterate through each character in the source and target strings
@@ -41,23 +41,23 @@ public class EditDistance {
 				// Check if the characters at the current positions are equal
 				if (sourceChar == targetChar) {
 					// If equal, update the edit distance value based on the diagonal value
-					editDistanceMatrix[i + 1][j + 1] = editDistanceMatrix[i][j];
+					editDistanceMatrixFinal[i + 1][j + 1] = editDistanceMatrixFinal[i][j];
 				} else {
 					// If not equal, calculate the minimum edit distance considering replacement,
 					// insertion, and deletion
-					int replace = editDistanceMatrix[i][j] + 1;
-					int insert = editDistanceMatrix[i][j + 1] + 1;
-					int delete = editDistanceMatrix[i + 1][j] + 1;
+					int replace = editDistanceMatrixFinal[i][j] + 1;
+					int insert = editDistanceMatrixFinal[i][j + 1] + 1;
+					int delete = editDistanceMatrixFinal[i + 1][j] + 1;
 
 					// Determine the minimum of the three operations and update the edit distance
 					// value
 					int min = Math.min(Math.min(replace, insert), delete);
-					editDistanceMatrix[i + 1][j + 1] = min;
+					editDistanceMatrixFinal[i + 1][j + 1] = min;
 				}
 			}
 		}
 
-		// The final edit distance is stored in the bottom-right corner of the matrix
-		return editDistanceMatrix[sourceLength][targetLength];
+		// edit distance in number of matrix
+		return editDistanceMatrixFinal[sourceLength][targetLength];
 	}
 }

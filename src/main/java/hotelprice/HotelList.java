@@ -19,9 +19,9 @@ import org.openqa.selenium.WebDriver;
  * and managing hotel data.
  */
 public class HotelList implements Serializable {
-	private static Map<String, Hotel> hotelList = new TreeMap<>();
-	private static Map<String, HashSet<String>> locationMap = new TreeMap<>();
-	private static Map<String, HashSet<String>> startDateMap = new TreeMap<>();
+	private static Map<String, Hotel> hotelList = new HashMap<>();
+	private static Map<String, HashSet<String>> locationMap = new HashMap<>();
+	private static Map<String, HashSet<String>> startDateMap = new HashMap<>();
 	private static Trie locationTrie = new Trie();
 	private static Trie allWordsTrie = new Trie();
 	private static String fileName = "./serializedValues";
@@ -66,7 +66,6 @@ public class HotelList implements Serializable {
 	 */
 	public static void addKayakHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("kzGk");
-		System.out.println("here. elements: " + elements.size());
 		// System.out.println(doc.html());
 		int count = 0;
 		for (Element element : elements) {
@@ -78,7 +77,7 @@ public class HotelList implements Serializable {
 					? element.getElementsByClass("zV27-price").first().text()
 					: "N/A";
 
-					System.out.println("Price: " + price);
+			System.out.println("Price: " + price);
 			String location = element.getElementsByClass("FLpo-location-name").first() != null
 					? element.getElementsByClass("FLpo-location-name").first().text().toLowerCase()
 					: "N/A";
@@ -122,7 +121,6 @@ public class HotelList implements Serializable {
 	 */
 	public static void addMomondoHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("kzGk");
-		System.out.println("here in momomndo: " + elements.size());
 		// System.out.println(doc.html());
 		int count = 0;
 		for (Element element : elements) {
@@ -177,7 +175,6 @@ public class HotelList implements Serializable {
 	 */
 	public static void addTripHotelDocumentToList(Document doc, WebDriver driver, Date startDate, Date endDate) {
 		Elements elements = doc.getElementsByClass("compressmeta-hotel-wrap-v8");
-		System.out.println("here. elements: " + elements.size());
 		// System.out.println(doc.html());
 		int count = 0;
 		for (Element element : elements) {

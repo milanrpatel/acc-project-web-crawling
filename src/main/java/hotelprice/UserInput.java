@@ -32,13 +32,13 @@ public class UserInput {
         Date endDate1 = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         // Asking user to enter Start Date for Booking
-        System.out.println("Please provide the start date using the format dd/MM/yyyy: ");
+        System.out.println("Kindly provide the start date using the format of dd/MM/yyyy: ");
         startDate = sc.nextLine();
         while (!validateDate(startDate)) {
             try {
                 startDate1 = sdf.parse(startDate);
                 System.out.println(
-                        "\nThe date format provided is not valid. Kindly input the start date using the format dd/MM/yyyy: ");
+                        "\nThe date format provided is not valid. Kindly input the start date using the format of dd/MM/yyyy: ");
                 startDate = sc.nextLine();
             } catch (Exception e) {
                 System.out.println("The provided date is incorrect. Please input a valid date.");
@@ -46,7 +46,7 @@ public class UserInput {
             }
         }
         // Asking user to enter End Date for Booking
-        System.out.println("\nPlease provide the end date using the format dd/MM/yyyy: ");
+        System.out.println("\nKindly share the end date in the format of dd/MM/yyyy: ");
         endDate = sc.nextLine();
         while (!validateDate(endDate)) {
             try {
@@ -63,65 +63,65 @@ public class UserInput {
         do {
             System.out.println("\nKindly provide Location: ");
             location = sc.nextLine();
-            if (validateLocation(location))
+            if (checkLocation(location))
                 break;
-            location = suggestNearestMatchingWord(sc, location, HotelList.getLocationMap().keySet());
+            location = suggestTheNearestMatchingWordString(sc, location, HotelList.getLocationMap().keySet());
             sc.nextLine();
-        } while (!validateLocation(location));
+        } while (!checkLocation(location));
 
-        if (validateDate(startDate) && validateDate(endDate) && validateLocation(location)) {
+        if (validateDate(startDate) && validateDate(endDate) && checkLocation(location)) {
             System.out.println(
                     "\nStarting Date: " + startDate + "\nEnding Date: " + endDate + "\nLocation: " + location + "\n");
             // find accurate results
-            Set<String> locationHotels = HotelList.getLocationMap().get(location);
+            Set<String> locationHotelsSet = HotelList.getLocationMap().get(location);
 
             startDate1 = sdf.parse(startDate);
             endDate1 = sdf.parse(endDate);
-            Calendar start = Calendar.getInstance();
-            start.setTime(startDate1);
-            Calendar end = Calendar.getInstance();
-            end.setTime(endDate1);
+            Calendar startC = Calendar.getInstance();
+            startC.setTime(startDate1);
+            Calendar endC = Calendar.getInstance();
+            endC.setTime(endDate1);
 
             Set<String> startDateHotels = HotelList.getStartDateMap().get(startDate);
-            Set<String> commonStartDateHotels = startDateHotels;
-            Map<String, Hotel> hotelList = HotelList.getHotelList();
+            Set<String> commonStartDateHotelsSet = startDateHotels;
+            Map<String, Hotel> listOfHotels = HotelList.getHotelList();
 
-            for (Date date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
+            for (Date date = startC.getTime(); startC.before(endC); startC.add(Calendar.DATE, 1), date = startC.getTime()) {
                 startDateHotels = HotelList.getStartDateMap().get(Common.convertDateToSimpleFormat(date));
 
-                if (startDateHotels != null && commonStartDateHotels != null && !startDateHotels.isEmpty()
-                        && !commonStartDateHotels.isEmpty()) {
-                    commonStartDateHotels = getCommonHotels(startDateHotels, commonStartDateHotels);
+                if (startDateHotels != null && commonStartDateHotelsSet != null && !startDateHotels.isEmpty()
+                        && !commonStartDateHotelsSet.isEmpty()) {
+                    commonStartDateHotelsSet = getCommonHotelsSet(startDateHotels, commonStartDateHotelsSet);
                 }
             }
 
-            Set<String> commonHotels = new HashSet<>();
-            if (locationHotels != null && commonStartDateHotels != null && !locationHotels.isEmpty()
-                    && !commonStartDateHotels.isEmpty()) {
-                commonHotels = getCommonHotels(locationHotels, commonStartDateHotels);
+            Set<String> commonHotelsSet = new HashSet<>();
+            if (locationHotelsSet != null && commonStartDateHotelsSet != null && !locationHotelsSet.isEmpty()
+                    && !commonStartDateHotelsSet.isEmpty()) {
+                commonHotelsSet = getCommonHotelsSet(locationHotelsSet, commonStartDateHotelsSet);
             }
 
-            if (!commonHotels.isEmpty()) {
+            if (!commonHotelsSet.isEmpty()) {
                 // Printing Hotel Names based on Ratings
                 System.out.println("\nHotel(s) list according to Ratings:");
-                List<String> ratingHotels = sortHotelsAccordingToCriteria(commonHotels, HotelList.getHotelList(), 1);
-                for (String hotel : ratingHotels) {
-                    System.out.println("    -- Name: " + hotelList.get(hotel).getName());
-                    System.out.println("       Price: " + hotelList.get(hotel).getPrice());
-                    System.out.println("       Location: " + hotelList.get(hotel).getLocation());
-                    System.out.println("       Ratings: " + hotelList.get(hotel).getScore());
-                    System.out.println("       Website: " + hotelList.get(hotel).getWebsite());
+                List<String> ratingBasedHotelsList = sortHotelsAccordingToMeasures(commonHotelsSet, HotelList.getHotelList(), 1);
+                for (String singleRatingHotel : ratingBasedHotelsList) {
+                    System.out.println("  <--> Name: " + listOfHotels.get(singleRatingHotel).getName());
+                    System.out.println("       Price: " + listOfHotels.get(singleRatingHotel).getPrice());
+                    System.out.println("       Location: " + listOfHotels.get(singleRatingHotel).getLocation());
+                    System.out.println("       Ratings: " + listOfHotels.get(singleRatingHotel).getScore());
+                    System.out.println("       Website: " + listOfHotels.get(singleRatingHotel).getWebsite());
                     System.out.print("\n");
                 }
                 // Printing Hotel Names based on Price
                 System.out.println("\nHotel(s) list according to Price:");
-                List<String> priceHotels = sortHotelsAccordingToCriteria(commonHotels, HotelList.getHotelList(), 2);
-                for (String hotel : priceHotels) {
-                    System.out.println("    -- Name: " + hotelList.get(hotel).getName());
-                    System.out.println("       Price: " + hotelList.get(hotel).getPrice());
-                    System.out.println("       Location: " + hotelList.get(hotel).getLocation());
-                    System.out.println("       Ratings: " + hotelList.get(hotel).getScore());
-                    System.out.println("       Website: " + hotelList.get(hotel).getWebsite());
+                List<String> priceBasedHotelsList = sortHotelsAccordingToMeasures(commonHotelsSet, HotelList.getHotelList(), 2);
+                for (String singlePriceHotel : priceBasedHotelsList) {
+                    System.out.println("    -- Name: " + listOfHotels.get(singlePriceHotel).getName());
+                    System.out.println("       Price: " + listOfHotels.get(singlePriceHotel).getPrice());
+                    System.out.println("       Location: " + listOfHotels.get(singlePriceHotel).getLocation());
+                    System.out.println("       Ratings: " + listOfHotels.get(singlePriceHotel).getScore());
+                    System.out.println("       Website: " + listOfHotels.get(singlePriceHotel).getWebsite());
                     System.out.print("\n");
                 }
 
@@ -143,16 +143,15 @@ public class UserInput {
     /**
      * Validates the start and end date based on the given format.
      *
-     * @param startDate2 The start date string.
-     * @param endDate2   The end date string.
-     * @return True if the start date is before or equal to the end date, false
-     *         otherwise.
+     * @param startDate2 Starting date string.
+     * @param endDate2   Ending date string.
+     * @return Boolean true of false
      */
     private static boolean startEndDate(String startDate2, String endDate2) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            Date date1 = sdf.parse(startDate2);
-            Date date2 = sdf.parse(endDate2);
+            SimpleDateFormat sdFormate = new SimpleDateFormat("dd/MM/yyyy");
+            Date date1 = sdFormate.parse(startDate2);
+            Date date2 = sdFormate.parse(endDate2);
             if (date1.compareTo(date2) > 0) {
                 return false;
             }
@@ -193,37 +192,37 @@ public class UserInput {
     /**
      * Sorts hotels based on specified criteria such as ratings or price.
      *
-     * @param commonHotels Set of hotels to be sorted.
-     * @param hotelList    Map of hotels with their details.
+     * @param commonHotelsSet Set of hotels to be sorted.
+     * @param hotelListMap    Map of hotels with their details.
      * @param criteria     The criteria for sorting (1 for ratings, 2 for price).
      * @return A sorted list of hotel names.
      */
-    private List<String> sortHotelsAccordingToCriteria(Set<String> commonHotels, Map<String, Hotel> hotelList,
+    private List<String> sortHotelsAccordingToMeasures(Set<String> commonHotelsSet, Map<String, Hotel> hotelListMap,
             int criteria) {
 
-        PriorityQueue<Entry> pq1 = new PriorityQueue<>(Collections.reverseOrder());
-        PriorityQueue<Entry> pq2 = new PriorityQueue<>();
-        PriorityQueue<Entry> pq = (criteria == 1) ? pq1 : pq2;
+        PriorityQueue<Entry> firstPQ = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Entry> secondPQ = new PriorityQueue<>();
+        PriorityQueue<Entry> pqFS = (criteria == 1) ? firstPQ : secondPQ;
 
-        for (String hotelName : commonHotels) {
-            Hotel hotel = hotelList.get(hotelName);
-            String hotelRating = hotel.getScore();
+        for (String commonHotelName : commonHotelsSet) {
+            Hotel hotel = hotelListMap.get(commonHotelName);
+            String hotelRatingStr = hotel.getScore();
 
-            String hotelPrice = hotel.getPrice().substring(3).replace(",", "");
+            String hotelPriceStr = hotel.getPrice().substring(3).replace(",", "");
 
-            float rating = Float.parseFloat(hotelRating);
-            float price = Float.parseFloat(hotelPrice);
+            float ratingOfHotel = Float.parseFloat(hotelRatingStr);
+            float priceOfHotel = Float.parseFloat(hotelPriceStr);
 
             if (criteria == 1) {
-                pq1.offer(new Entry(hotelName, rating));
+                firstPQ.offer(new Entry(commonHotelName, ratingOfHotel));
             } else if (criteria == 2) {
-                pq2.offer(new Entry(hotelName, price));
+                secondPQ.offer(new Entry(commonHotelName, priceOfHotel));
             }
         }
 
         List<String> result = new ArrayList<>();
-        while (!pq.isEmpty()) {
-            result.add(pq.poll().key);
+        while (!pqFS.isEmpty()) {
+            result.add(pqFS.poll().key);
         }
         return result;
     }
@@ -232,37 +231,37 @@ public class UserInput {
      * Provides word completion suggestions for a given location.
      *
      * @param sc          The Scanner object for user input.
-     * @param location    The location for which suggestions are needed.
+     * @param locationStr    The location for which suggestions are needed.
      * @param locationSet The set of available locations.
      * @return The suggested location.
      */
-    private String suggestWordCompletion(Scanner sc, String location, Set<String> locationSet) {
+    private String suggestCompletionOfWord(Scanner sc, String locationStr, Set<String> locationSet) {
         System.out.println("Completing Word:");
         Trie locationTrie = HotelList.getLocationTrie();
-        List<String> completedWords = locationTrie.completeWord(location);
+        List<String> completedWordsList = locationTrie.completeWord(locationStr);
         int count = 1;
 
-        for (int i = 0; i < ((completedWords.size() < 5) ? completedWords.size() : 5); i++) {
-            System.out.println("Are you intending to say------" + completedWords.get(i) + "? " + "Type " + count);
+        for (int i = 0; i < ((completedWordsList.size() < 5) ? completedWordsList.size() : 5); i++) {
+            System.out.println("Are you intending to say------" + completedWordsList.get(i) + "? " + "Type " + count);
             count++;
         }
         int userInput = sc.nextInt();
         switch (userInput) {
             case 1:
-                return completedWords.get(0);
+                return completedWordsList.get(0);
             case 2:
-                return completedWords.get(1);
+                return completedWordsList.get(1);
             case 3:
-                return completedWords.get(2);
+                return completedWordsList.get(2);
             case 4:
-                return completedWords.get(3);
+                return completedWordsList.get(3);
             case 5:
-                return completedWords.get(4);
+                return completedWordsList.get(4);
             case 9:
                 return "";
         }
 
-        return location;
+        return locationStr;
     }
 
     /**
@@ -273,7 +272,7 @@ public class UserInput {
      * @param locationSet The set of available locations.
      * @return The suggested location.
      */
-    private String suggestNearestMatchingWord(Scanner sc, String location, Set<String> locationSet) {
+    private String suggestTheNearestMatchingWordString(Scanner sc, String location, Set<String> locationSet) {
         // edit distance
         int min = Integer.MAX_VALUE;
         String minWord = "";
@@ -281,17 +280,17 @@ public class UserInput {
         int secondMin = Integer.MAX_VALUE;
         String secondMinWord = "";
 
-        for (String loc : locationSet) {
-            int distance = EditDistance.editDistance(loc, location);
+        for (String l : locationSet) {
+            int distance = EditDistance.editDistance(l, location);
             if (distance < min) {
                 secondMin = min;
                 secondMinWord = minWord;
 
                 min = distance;
-                minWord = loc;
+                minWord = l;
             } else if (distance < secondMin) {
                 secondMin = distance;
-                secondMinWord = loc;
+                secondMinWord = l;
             }
         }
         int c = 1;
@@ -309,7 +308,7 @@ public class UserInput {
 
         switch (userInput) {
             case 0:
-                return suggestWordCompletion(sc, location, HotelList.getLocationMap().keySet());
+                return suggestCompletionOfWord(sc, location, HotelList.getLocationMap().keySet());
             case 1:
                 return minWord;
             case 2:
@@ -336,7 +335,7 @@ public class UserInput {
             }
         }
         Date todayDate = new Date();
-        Calendar todayCalendar = setDateToCalendar(todayDate);
+        Calendar todayCalendar = setDateInCalendar(todayDate);
 
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -354,19 +353,19 @@ public class UserInput {
     /**
      * Sets the time of the calendar object to the start of the day.
      *
-     * @param date The date to set the calendar with.
+     * @param dateObj The date to set the calendar with.
      * @return The Calendar object set to the provided date.
      * @throws ParseException If there is an error parsing date.
      */
-    public static Calendar setDateToCalendar(Date date) throws ParseException {
+    public static Calendar setDateInCalendar(Date dateObj) throws ParseException {
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date);
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);
-        return cal;
+        Calendar calObj = Calendar.getInstance();
+        calObj.setTime(dateObj);
+        calObj.set(Calendar.HOUR_OF_DAY, 0);
+        calObj.set(Calendar.MINUTE, 0);
+        calObj.set(Calendar.SECOND, 0);
+        calObj.set(Calendar.MILLISECOND, 0);
+        return calObj;
     }
 
     /**
@@ -376,25 +375,25 @@ public class UserInput {
      * @param startDateHotels Set of hotels based on start date.
      * @return Set of common hotels.
      */
-    public static Set<String> getCommonHotels(Set<String> locationHotels, Set<String> startDateHotels) {
-        Set<String> commonHotels = new HashSet<>();
-        for (String hotel : locationHotels) {
-            if (startDateHotels.contains(hotel)) {
-                commonHotels.add(hotel);
+    public static Set<String> getCommonHotelsSet(Set<String> locationHotels, Set<String> startDateHotels) {
+        Set<String> commonHotelsSet = new HashSet<>();
+        for (String singleHotel : locationHotels) {
+            if (startDateHotels.contains(singleHotel)) {
+                commonHotelsSet.add(singleHotel);
             }
         }
-        return commonHotels;
+        return commonHotelsSet;
     }
 
     /**
      * Validates if the given location exists in the list of available locations.
      *
-     * @param location The location to validate.
+     * @param locationStr The location to validate.
      * @return True if the location exists, false otherwise.
      */
-    public static boolean validateLocation(String location) {
-        Set<String> locations = HotelList.getLocationMap().keySet();
-        if (locations.contains(location)) {
+    public static boolean checkLocation(String locationStr) {
+        Set<String> locationsSet = HotelList.getLocationMap().keySet();
+        if (locationsSet.contains(locationStr)) {
             return true;
         } else {
 
